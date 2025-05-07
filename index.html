@@ -1,195 +1,77 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Measurement Converter </title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #00c6ff, #0072ff); 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            width: 400px;
-            text-align: center;
-            transform: translateY(-20px);
-        }
-
-        h1 {
-            color: #ff4081;
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            font-size: 1rem;
-            color: #333;
-        }
-
-        select, input, button {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-            font-size: 1rem;
-        }
-
-        select, input {
-            background-color: #f0f4f7;
-            color: #333;
-        }
-
-        button {
-            background-color: #ff4081;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #ff80ab;
-        }
-
-        .result {
-            background-color: #f9f9f9;
-            padding: 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #0072ff;
-        }
-
-        .error {
-            color: red;
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-    </style>
+  <title>Converter</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    select, input, button { margin: 10px; padding: 10px; }
+    span { font-weight: bold; font-size: 1.2em; }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Measurement Converter</h1>
-    <label for="measurementType">Choose a Measurement Type:</label>
-    <select id="measurementType" onchange="updateUnits()">
-        <option value="length">Length</option>
-        <option value="weight">Weight</option>
-        <option value="temperature">Temperature</option>
-    </select>
-    <label for="inputValue">Enter Value:</label>
-    <input type="number" id="inputValue" placeholder="Enter value" />
-    <label for="fromUnit">From Unit:</label>
-    <select id="fromUnit"></select>
-    <label for="toUnit">To Unit:</label>
-    <select id="toUnit"></select>
-    <button onclick="convert()">Convert</button>
-    <div id="errorMessage" class="error"></div>
-    <div id="result" class="result">
-        Result: <span id="conversionResult">0</span>
-    </div>
-</div>
+<h2>Measurement Converter</h2>
+
+<select id="type" onchange="setUnits()">
+  <option value="length">Length</option>
+  <option value="weight">Weight</option>
+  <option value="temperature">Temperature</option>
+</select><br>
+
+<input id="value" type="number" placeholder="Enter value"><br>
+
+<select id="from"></select>
+<select id="to"></select><br>
+
+<button onclick="convert()">Convert</button><br><br>
+
+Result: <span id="output">0</span>
 
 <script>
-    const conversions = {
-        length: {
-            units: ['meters', 'kilometers', 'miles', 'feet'],
-            toMeters: {
-                'kilometers': 1000,
-                'miles': 1609.34,
-                'feet': 0.3048,
-                'meters': 1
-            }
-        },
-        weight: {
-            units: ['kilograms', 'grams', 'pounds'],
-            toKilograms: {
-                'grams': 0.001,
-                'pounds': 0.453592,
-                'kilograms': 1
-            }
-        },
-        temperature: {
-            units: ['Celsius', 'Fahrenheit', 'Kelvin'],
-            toCelsius: {
-                'Fahrenheit': (temp) => (temp - 32) * 5 / 9,
-                'Kelvin': (temp) => temp - 273.15,
-                'Celsius': (temp) => temp
-            }
-        }
-    };
-
-    function updateUnits() {
-        const type = document.getElementById('measurementType').value;
-        const fromUnit = document.getElementById('fromUnit');
-        const toUnit = document.getElementById('toUnit');
-        const units = conversions[type].units;
-        fromUnit.innerHTML = '';
-        toUnit.innerHTML = '';
-        units.forEach(unit => {
-            const optionFrom = document.createElement('option');
-            optionFrom.value = unit;
-            optionFrom.innerText = unit;
-            fromUnit.appendChild(optionFrom);
-
-            const optionTo = document.createElement('option');
-            optionTo.value = unit;
-            optionTo.innerText = unit;
-            toUnit.appendChild(optionTo);
-        });
-        fromUnit.value = units[0];
-        toUnit.value = units[1];
+  const units = {
+    length: { list: ['meters', 'kilometers', 'miles'], base: { meters:1, kilometers:1000, miles:1609.34 } },
+    weight: { list: ['kilograms', 'grams', 'pounds'], base: { kilograms:1, grams:0.001, pounds:0.453592 } },
+    temperature: {
+      list: ['Celsius', 'Fahrenheit', 'Kelvin'],
+      convert: (val, from, to) => {
+        if (from === 'Fahrenheit') val = (val - 32) * 5/9;
+        else if (from === 'Kelvin') val = val - 273.15;
+        if (to === 'Fahrenheit') return (val * 9/5) + 32;
+        else if (to === 'Kelvin') return val + 273.15;
+        return val;
+      }
     }
+  };
 
-    function convert() {
-        const type = document.getElementById('measurementType').value;
-        const inputValue = parseFloat(document.getElementById('inputValue').value);
-        const fromUnit = document.getElementById('fromUnit').value;
-        const toUnit = document.getElementById('toUnit').value;
-        const errorMessage = document.getElementById('errorMessage');
-        const resultElement = document.getElementById('conversionResult');
-        errorMessage.innerText = '';
-        if (isNaN(inputValue) || inputValue === '') {
-            errorMessage.innerText = 'Please enter a valid number.';
-            resultElement.innerText = '0';
-            return;
-        }
-        let result;
-        if (type === 'length') {
-            const meters = inputValue * conversions.length.toMeters[fromUnit];
-            result = meters / conversions.length.toMeters[toUnit];
-        } else if (type === 'weight') {
-            const kilograms = inputValue * conversions.weight.toKilograms[fromUnit];
-            result = kilograms / conversions.weight.toKilograms[toUnit];
-        } else if (type === 'temperature') {
-            const celsius = conversions.temperature.toCelsius[fromUnit](inputValue);
-            if (toUnit === 'Fahrenheit') {
-                result = (celsius * 9 / 5) + 32;
-            } else if (toUnit === 'Kelvin') {
-                result = celsius + 273.15;
-            } else {
-                result = celsius;
-            }
-        }
+  function setUnits() {
+    const type = document.getElementById('type').value;
+    const from = document.getElementById('from');
+    const to = document.getElementById('to');
+    from.innerHTML = to.innerHTML = '';
+    units[type].list.forEach(unit => {
+      from.innerHTML += `<option>${unit}</option>`;
+      to.innerHTML += `<option>${unit}</option>`;
+    });
+  }
 
-        resultElement.innerText = result.toFixed(2);
+  function convert() {
+    const type = document.getElementById('type').value;
+    const val = parseFloat(document.getElementById('value').value);
+    const from = document.getElementById('from').value;
+    const to = document.getElementById('to').value;
+    if (isNaN(val)) { document.getElementById('output').innerText = 'Invalid'; return; }
+
+    let result = 0;
+    if (type === 'temperature') {
+      result = units.temperature.convert(val, from, to);
+    } else {
+      const base = units[type].base;
+      result = val * base[from] / base[to];
     }
+    document.getElementById('output').innerText = result.toFixed(2);
+  }
 
-    updateUnits();
+  setUnits();
 </script>
 
 </body>
