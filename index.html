@@ -105,90 +105,75 @@
 </div>
 
 <script>
+    // All units and conversion logic grouped together
     const conversions = {
         length: {
             units: ['meters', 'kilometers', 'miles', 'feet'],
-            toMeters: {
-                'kilometers': 1000,
-                'miles': 1609.34,
-                'feet': 0.3048,
-                'meters': 1
-            }
+            base: 'meters',
+            rates: { meters: 1, kilometers: 1000, miles: 1609.34, feet: 0.3048 }
         },
         weight: {
             units: ['kilograms', 'grams', 'pounds'],
-            toKilograms: {
-                'grams': 0.001,
-                'pounds': 0.453592,
-                'kilograms': 1
-            }
+            base: 'kilograms',
+            rates: { kilograms: 1, grams: 0.001, pounds: 0.453592 }
         },
         temperature: {
             units: ['Celsius', 'Fahrenheit', 'Kelvin'],
             toCelsius: {
-                'Fahrenheit': (temp) => (temp - 32) * 5 / 9,
-                'Kelvin': (temp) => temp - 273.15,
-                'Celsius': (temp) => temp
+                Celsius: v => v,
+                Fahrenheit: v => (v - 32) * 5/9,
+                Kelvin: v => v - 273.15
+            },
+            fromCelsius: {
+                Celsius: v => v,
+                Fahrenheit: v => (v * 9/5) + 32,
+                Kelvin: v => v + 273.15
             }
         }
     };
 
+    // Updates unit dropdowns when type changes
     function updateUnits() {
         const type = document.getElementById('measurementType').value;
-        const fromUnit = document.getElementById('fromUnit');
-        const toUnit = document.getElementById('toUnit');
         const units = conversions[type].units;
-        fromUnit.innerHTML = '';
-        toUnit.innerHTML = '';
-        units.forEach(unit => {
-            const optionFrom = document.createElement('option');
-            optionFrom.value = unit;
-            optionFrom.innerText = unit;
-            fromUnit.appendChild(optionFrom);
-
-            const optionTo = document.createElement('option');
-            optionTo.value = unit;
-            optionTo.innerText = unit;
-            toUnit.appendChild(optionTo);
+        ['fromUnit', 'toUnit'].forEach(id => {
+            const select = document.getElementById(id);
+            select.innerHTML = units.map(u => `<option value="${u}">${u}</option>`).join('');
         });
-        fromUnit.value = units[0];
-        toUnit.value = units[1];
     }
 
+    // Main convert function
     function convert() {
         const type = document.getElementById('measurementType').value;
-        const inputValue = parseFloat(document.getElementById('inputValue').value);
-        const fromUnit = document.getElementById('fromUnit').value;
-        const toUnit = document.getElementById('toUnit').value;
-        const errorMessage = document.getElementById('errorMessage');
-        const resultElement = document.getElementById('conversionResult');
-        errorMessage.innerText = '';
-        if (isNaN(inputValue) || inputValue === '') {
-            errorMessage.innerText = 'Please enter a valid number.';
-            resultElement.innerText = '0';
+        const input = parseFloat(document.getElementById('inputValue').value);
+        const from = document.getElementById('fromUnit').value;
+        const to = document.getElementById('toUnit').value;
+        const error = document.getElementById('errorMessage');
+        const output = document.getElementById('conversionResult');
+
+        error.textContent = '';
+
+        if (isNaN(input)) {
+            error.textContent = 'Please enter a valid number.';
+            output.textContent = '0';
             return;
         }
+
         let result;
-        if (type === 'length') {
-            const meters = inputValue * conversions.length.toMeters[fromUnit];
-            result = meters / conversions.length.toMeters[toUnit];
-        } else if (type === 'weight') {
-            const kilograms = inputValue * conversions.weight.toKilograms[fromUnit];
-            result = kilograms / conversions.weight.toKilograms[toUnit];
-        } else if (type === 'temperature') {
-            const celsius = conversions.temperature.toCelsius[fromUnit](inputValue);
-            if (toUnit === 'Fahrenheit') {
-                result = (celsius * 9 / 5) + 32;
-            } else if (toUnit === 'Kelvin') {
-                result = celsius + 273.15;
-            } else {
-                result = celsius;
-            }
+
+        if (type === 'temperature') {
+            const toC = conversions.temperature.toCelsius[from](input);
+            result = conversions.temperature.fromCelsius[to](toC);
+        } else {
+            const rate = conversions[type].rates;
+            const baseValue = input * rate[from]; // Convert to base (meters/kilograms)
+            result = baseValue / rate[to];        // Convert from base to target
         }
 
-        resultElement.innerText = result.toFixed(2);
+        output.textContent = result.toFixed(2);
     }
 
+    // Initialize on load
     updateUnits();
 </script>
 
