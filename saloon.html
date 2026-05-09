@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Lumière Salon — The Art of Radiance. Where beauty meets artistry, precision cuts, and curated aesthetics.">
+  <title>Lumière — The Art of Radiance | Salon + Admin Suite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ---------- GLOBAL RESET & SHARED ---------- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #fcfaf8; overflow-x: hidden; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    /* ========== HOME VIEW (FULL ORIGINAL DESIGN + IMPROVEMENTS) ========== */
+    #homeView {
+      --charcoal: #1a1a1a;
+      --gold: #c9a96e;
+      --gold-light: #e8d5a8;
+      --cream: #fcfaf8;
+      --warm-white: #fffdf9;
+      --blush: #f0e0d6;
+      --rose: #c9897a;
+      --deep-rose: #a05d52;
+      --mid: #6b6259;
+      --light-mid: #a09690;
+      --border: rgba(201,169,110,0.2);
+      --shadow: 0 8px 40px rgba(44,41,37,0.08);
+      --shadow-lg: 0 20px 60px rgba(44,41,37,0.12);
+      --transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      display: block;
+      background-color: var(--cream);
+      color: var(--charcoal);
+    }
+    #homeView h1, #homeView h2, #homeView h3, #homeView .serif { font-family: 'Cormorant Garamond', serif; font-weight: 500; }
+    #homeView .salon-tool { position: fixed; pointer-events: none; z-index: 1; opacity: 0.12; color: var(--gold); filter: drop-shadow(0 0 6px rgba(201,169,110,0.4)); transition: transform 0.1s linear; }
+    #homeView nav { position: fixed; top: 0; width: 100%; height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 6%; z-index: 1000; transition: 0.3s ease; background: rgba(252,250,248,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+    #homeView nav.scrolled { height: 68px; box-shadow: var(--shadow); }
+    #homeView .logo { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; text-decoration: none; color: var(--charcoal); letter-spacing: 2px; }
+    #homeView .logo span { color: var(--gold); }
+    #homeView .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    #homeView .nav-links a { text-decoration: none; color: var(--charcoal); font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; position: relative; }
+    #homeView .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 100%; height: 1.5px; background: var(--gold); transition: right 0.3s; }
+    #homeView .nav-links a:hover::after { right: 0; }
+    #homeView .nav-cta { background: var(--charcoal); color: var(--cream) !important; padding: 0.4rem 1.4rem; border-radius: 40px; }
+    #homeView .nav-cta::after { display: none; }
+    #homeView .hero { height: 100vh; position: relative; display: flex; align-items: center; padding: 0 8%; background: #000; color: #fff; overflow: hidden; }
+    #homeView .hero-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.55; }
+    #homeView .hero-video video { width: 100%; height: 100%; object-fit: cover; }
+    #homeView .hero-content { position: relative; z-index: 2; max-width: 720px; }
+    #homeView .hero-label { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.6rem; }
+    #homeView .hero-label::before { content: ''; width: 36px; height: 1px; background: var(--gold); }
+    #homeView .hero-h1 { font-size: clamp(3.5rem, 9vw, 6.5rem); line-height: 0.92; margin-bottom: 1.6rem; }
+    #homeView .hero-h1 em { font-style: italic; color: var(--gold); }
+    #homeView .hero-sub { font-size: 1rem; font-weight: 300; color: #ddd; max-width: 480px; margin-bottom: 2rem; }
+    #homeView .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
+    #homeView .btn-primary { background: var(--gold); color: var(--charcoal); padding: 0.8rem 2.2rem; border-radius: 50px; font-weight: 700; text-decoration: none; transition: 0.2s; display: inline-block; }
+    #homeView .btn-primary:hover { background: #fff; transform: translateY(-2px); }
+    #homeView .btn-outline { border: 1px solid var(--gold); color: var(--gold); padding: 0.8rem 2rem; border-radius: 50px; text-decoration: none; }
+    #homeView .hero-stats { display: flex; gap: 2.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.2); }
+    #homeView .stat-num { font-size: 2rem; font-weight: 500; font-family: 'Cormorant Garamond'; color: var(--gold); }
+    #homeView .hero-badge { position: absolute; bottom: 2rem; left: 5%; background: rgba(255,255,255,0.96); backdrop-filter: blur(8px); padding: 0.8rem 1.5rem; border-radius: 60px; color: var(--charcoal); z-index: 3; display: flex; align-items: center; gap: 0.8rem; font-size: 0.85rem; font-weight: 500; border: 1px solid rgba(201,169,110,0.3); }
+    #homeView .section-label { font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; }
+    #homeView .section-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    #homeView .section-title { font-family: 'Cormorant Garamond'; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; }
+    #homeView .philosophy { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; padding: 100px 8%; background: var(--warm-white); }
+    #homeView .about-img-stack { position: relative; aspect-ratio: 4/5; max-width: 90%; margin: 0 auto; }
+    #homeView .main-img { width: 70%; object-fit: cover; aspect-ratio: 3/4; position: absolute; top: 0; left: 0; border-radius: 4px; box-shadow: 12px 12px 0 var(--gold); }
+    #homeView .accent-img { width: 45%; aspect-ratio: 1; object-fit: cover; position: absolute; bottom: 0; right: 0; border: 6px solid var(--warm-white); box-shadow: var(--shadow-lg); border-radius: 4px; }
+    #homeView .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.6rem; margin-top: 2.5rem; }
+    #homeView .service-card { background: var(--warm-white); border-radius: 16px; padding: 1.8rem; border: 1px solid var(--border); transition: 0.3s; }
+    #homeView .service-card.featured { background: var(--charcoal); color: white; }
+    #homeView .service-icon { font-size: 2rem; margin-bottom: 0.8rem; color: var(--gold); }
+    #homeView .service-name { font-family: 'Cormorant Garamond'; font-size: 1.5rem; font-weight: 500; }
+    #homeView .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 40px; margin-top: 50px; }
+    #homeView .team-member img { width: 100%; aspect-ratio: 4/5; object-fit: cover; filter: grayscale(0.9); transition: 0.5s; border-radius: 8px; }
+    #homeView .gallery-grid { display: grid; grid-template-columns: repeat(4,1fr); grid-template-rows: 200px 200px; gap: 14px; margin-top: 2rem; }
+    #homeView .gallery-item { overflow: hidden; border-radius: 12px; position: relative; }
+    #homeView .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+    #homeView .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; }
+    #homeView .testimonials { background: var(--blush); padding: 100px 8%; }
+    #homeView .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.8rem; margin-top: 2rem; }
+    #homeView .testimonial-card { background: var(--warm-white); border-radius: 16px; padding: 1.8rem; box-shadow: var(--shadow); }
+    #homeView .contact-section { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; padding: 100px 8%; background: var(--cream); }
+    #homeView .mini-map { width: 100%; height: 220px; border-radius: 24px; overflow: hidden; margin-top: 1rem; border: 1px solid var(--border); }
+    #homeView .mini-map iframe { width: 100%; height: 100%; border: 0; display: block; }
+    #homeView .contact-form { background: var(--warm-white); padding: 2rem; border-radius: 20px; box-shadow: var(--shadow); }
+    #homeView .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    #homeView .form-group label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; color: var(--mid); font-weight: 600; }
+    #homeView input, #homeView select, #homeView textarea { width: 100%; padding: 11px 16px; border: 1px solid var(--border); border-radius: 40px; background: var(--warm-white); font-family: inherit; outline: none; }
+    #homeView .form-submit { background: var(--charcoal); color: white; padding: 12px 28px; border-radius: 40px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    #homeView .form-submit:hover { background: var(--gold); color: var(--charcoal); }
+    /* FOOTER - FULL MATCH ORIGINAL INDEX.HTML */
+    #homeView footer { background: var(--charcoal); color: var(--cream); padding: 4rem 8% 2rem; margin-top: 0; }
+    #homeView .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 3rem; }
+    #homeView .footer-brand .brand-name { font-size: 2rem; margin-bottom: 0.6rem; }
+    #homeView .footer-brand .brand-name span { color: var(--gold); }
+    #homeView .social-links { display: flex; gap: 0.8rem; margin-top: 1.2rem; }
+    #homeView .social-link { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; color: var(--light-mid); transition: 0.2s; text-decoration: none; }
+    #homeView .social-link:hover { border-color: var(--gold); color: var(--gold); }
+    #homeView .footer-col h4 { font-size: 0.7rem; letter-spacing: 2px; color: var(--gold); margin-bottom: 1.2rem; }
+    #homeView .footer-col ul { list-style: none; }
+    #homeView .footer-col li { margin-bottom: 0.6rem; }
+    #homeView .footer-col a, #homeView .footer-col p { color: var(--light-mid); text-decoration: none; font-size: 0.85rem; transition: 0.2s; }
+    #homeView .footer-col a:hover { color: var(--cream); }
+    #homeView .newsletter-input { background: transparent; border: 1px solid var(--mid); border-radius: 40px; padding: 8px 14px; color: white; width: 100%; margin-bottom: 8px; }
+    #homeView .newsletter-btn { background: var(--gold); border: none; border-radius: 40px; padding: 8px; width: 100%; color: var(--charcoal); font-weight: 700; cursor: pointer; transition: 0.2s; }
+    #homeView .newsletter-btn:hover { background: white; }
+    #homeView .footer-bottom { padding-top: 2rem; display: flex; justify-content: space-between; flex-wrap: wrap; font-size: 0.75rem; color: var(--light-mid); }
+    #homeView .reveal { opacity: 0; transform: translateY(40px); transition: var(--transition); }
+    #homeView .reveal.active { opacity: 1; transform: translateY(0); }
+    #homeView .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; }
+    #homeView .hamburger span { width: 26px; height: 2px; background: var(--charcoal); }
+    #homeView .mobile-menu { display: none; position: fixed; top: 80px; left: 0; right: 0; background: var(--warm-white); padding: 2rem 6%; z-index: 999; border-bottom: 1px solid var(--border); }
+    #homeView .mobile-menu.open { display: block; }
+    @media (max-width: 992px) {
+      #homeView .philosophy, #homeView .contact-section { grid-template-columns: 1fr; gap: 40px; }
+      #homeView .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      #homeView .gallery-item:nth-child(1) { grid-column: span 2; height: 220px; }
+      #homeView .nav-links { display: none; }
+      #homeView .hamburger { display: flex; }
+      #homeView .section-title { font-size: clamp(1.8rem, 5vw, 2.6rem); }
+    }
+
+    /* ========== LOGIN, ADMIN, TRASH STYLES (unchanged, functional) ========== */
+    #loginView { background: #000; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; font-family: 'Plus Jakarta Sans', sans-serif; display: none; }
+    #loginView .video-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+    #loginView .video-background { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.4); }
+    #loginView .login-container { max-width: 480px; width: 90%; position: relative; z-index: 2; }
+    #loginView .login-card { background: rgba(255, 253, 249, 0.92); backdrop-filter: blur(12px); border-radius: 40px; padding: 48px 38px; text-align: center; }
+    #loginView .brand h1 { font-family: 'Cormorant Garamond', serif; font-size: 68px; background: linear-gradient(135deg, #e4c9a3, #a57c3c); background-clip: text; -webkit-background-clip: text; color: transparent; }
+    #loginView input { width: 100%; padding: 15px 18px; border-radius: 28px; border: 1px solid rgba(201,169,110,0.3); margin-top: 6px; }
+    #loginView button { width: 100%; padding: 15px; background: #1e1b17; color: white; border-radius: 40px; font-weight: 700; cursor: pointer; }
+    #adminView, #trashView { font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; background: #000; position: relative; display: none; }
+    #adminView .video-bg, #trashView .video-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; object-fit: cover; filter: brightness(0.8); }
+    #adminView .overlay, #trashView .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(253,251,249,0.9) 0%, rgba(253,251,249,0.6) 100%); z-index: -1; }
+    #adminView .container, #trashView .container { max-width: 1400px; margin: 0 auto; padding: 40px 24px; position: relative; z-index: 10; }
+    #adminView .header, #trashView .header { display: flex; justify-content: space-between; margin-bottom: 40px; }
+    #adminView .title h1 { font-family: 'Cormorant Garamond'; font-size: 52px; background: linear-gradient(135deg, #1a1a1a 0%, #c9a96e 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .table-wrap { background: rgba(255,255,255,0.85); backdrop-filter: blur(15px); border-radius: 30px; overflow-x: auto; }
+    #adminView table, #trashView table { width: 100%; border-collapse: collapse; min-width: 900px; }
+    #adminView th, #adminView td, #trashView th, #trashView td { padding: 20px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.03); }
+    .act-btn, .status-badge { padding: 8px 16px; border-radius: 100px; font-size: 11px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+    .btn-confirm { background: #e6f4ea; color: #1e7e34; }
+    .btn-visited { background: #e8f0fe; color: #1a73e8; }
+    .btn-trash { background: #fce8e6; color: #d93025; }
+    .chip { padding: 12px 24px; background: rgba(255,255,255,0.85); border-radius: 100px; text-decoration: none; font-weight: 600; cursor: pointer; }
+    .chip.active { background: #c9a96e; color: white; }
+    .search-container { background: rgba(255,255,255,0.85); padding: 24px; border-radius: 24px; display: flex; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+    .logout-link, .back-btn { padding: 12px 24px; background: #1a1a1a; color: white; border-radius: 100px; text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- ==================== HOME VIEW (COMPLETE + ENHANCED) ==================== -->
+<div id="homeView">
+  <div id="salon-tools-container-home"></div>
+  <nav id="navbarHome">
+    <a href="#" class="logo">LUMI<span>È</span>RE</a>
+    <ul class="nav-links">
+      <li><a href="#philosophy">Philosophy</a></li><li><a href="#services">Services</a></li><li><a href="#team">Artists</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#contact" class="nav-cta">Book Now</a></li>
+      <li><a href="#" id="adminEntryFromHome" style="background:#c9a96e20; padding:0.4rem 1rem; border-radius:40px;">🔐 Admin</a></li>
+    </ul>
+    <button class="hamburger" id="homeHamburger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="homeMobileMenu">
+    <ul>
+      <li><a href="#philosophy">Philosophy</a></li><li><a href="#services">Services</a></li><li><a href="#team">Artists</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#contact">Book Now</a></li><li><a href="#" id="adminEntryMobileHome">Admin</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-video"><video autoplay muted loop playsinline><source src="https://videos.pexels.com/video-files/6502872/6502872-hd_1080_1920_30fps.mp4" type="video/mp4"></video></div>
+    <div class="hero-content reveal"><div class="hero-label">Award-Winning Atelier</div><h1 class="hero-h1">Where Beauty <br>Becomes <em>Artistry.</em></h1><p class="hero-sub">New York's premier destination for curated aesthetics — precision, grace, and transformation.</p><div class="hero-actions"><a href="#contact" class="btn-primary">Begin Journey</a><a href="#services" class="btn-outline">Explore Services</a></div><div class="hero-stats"><div><div class="stat-num">12+</div><div class="stat-label">Years of Excellence</div></div><div><div class="stat-num">4.9★</div><div class="stat-label">Guest Rating</div></div><div><div class="stat-num">3k+</div><div class="stat-label">Radiant Clients</div></div></div></div>
+    <div class="hero-badge"><span class="stars">★★★★★</span> <span class="badge-title">Best Salon 2024 · City Beauty Awards</span></div>
+  </section>
+
+  <!-- PHILOSOPHY (images slightly smaller) -->
+  <section id="philosophy" class="philosophy">
+    <div class="about-img-stack reveal"><img class="main-img" src="https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=800&q=80" alt="Salon interior"><img class="accent-img" src="https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?w=400&q=80" alt="Styling"></div>
+    <div class="philosophy-text reveal"><div class="section-label">The Ritual</div><h2>Precision Crafted, <br>Personally Tailored.</h2><p style="color: var(--mid); margin: 24px 0; line-height: 1.7;">At Lumière, we believe in timelessness, not trends. Our master artists blend Parisian techniques with your unique essence, creating harmony between luxury and self-expression.</p><div class="feature-list"><div><i class="fa-regular fa-gem" style="color:var(--gold); margin-right:12px;"></i> Certified master stylists · 5–15 years experience</div><div><i class="fa-regular fa-leaf" style="color:var(--gold); margin-right:12px;"></i> Clean, sustainable & cruelty-free products</div><div><i class="fa-regular fa-clock" style="color:var(--gold); margin-right:12px;"></i> Complimentary consultation for every new guest</div></div></div>
+  </section>
+
+  <!-- SERVICES (title refined) -->
+  <section id="services"><div class="reveal" style="text-align:center; margin-bottom:20px;"><span class="section-label" style="justify-content:center;">The Service Menu</span><h2 class="section-title">Curated Artistry</h2></div>
+  <div class="services-grid"><div class="service-card reveal"><div class="service-icon">✂️</div><div class="service-name">Precision Cut</div><div class="service-desc">Architectural design tailored to your silhouette & growth patterns.</div><div class="service-price">$75+</div><div class="service-tag">Most Popular</div></div><div class="service-card featured reveal"><div class="service-icon">🎨</div><div class="service-name">Master Balayage</div><div class="service-desc">Hand-painted depth and luminous dimension. Signature Lumière glow.</div><div class="service-price">$150+</div><div class="service-tag">Signature Service</div></div><div class="service-card reveal"><div class="service-icon">💆</div><div class="service-name">Scalp Ritual</div><div class="service-desc">Detoxifying botanical therapy to restore vitality.</div><div class="service-price">$65+</div></div><div class="service-card reveal"><div class="service-icon">💅</div><div class="service-name">Nail Artistry</div><div class="service-desc">Gel, acrylic, and bespoke nail designs.</div><div class="service-price">$45+</div></div><div class="service-card reveal"><div class="service-icon">🌿</div><div class="service-name">Luminous Facial</div><div class="service-desc">Botanical-infused glow treatment.</div><div class="service-price">$90+</div></div><div class="service-card reveal"><div class="service-icon">👰</div><div class="service-name">Bridal Atelier</div><div class="service-desc">Full bridal styling — hair, makeup perfection.</div><div class="service-price">$350+</div></div></div></section>
+
+  <!-- TEAM -->
+  <section id="team"><div class="reveal" style="margin-bottom:40px;"><span class="section-label">The Master Artists</span><h2 class="section-title">Artisans of Radiance</h2></div><div class="team-grid"><div class="team-member reveal"><img src="https://images.unsplash.com/photo-1595076196728-58569fff3d5c?auto=format&fit=crop&w=500&q=80" alt="Elise"><h3>Elise Laurent</h3><div class="team-role">Creative Director</div></div><div class="team-member reveal"><img src="https://images.unsplash.com/photo-1614644147724-2d4785d69962?auto=format&fit=crop&w=500&q=80" alt="Marcus"><h3>Marcus Vane</h3><div class="team-role">Color Specialist</div></div><div class="team-member reveal"><img src="https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=500&q=80" alt="Sasha"><h3>Sasha Grey</h3><div class="team-role">Stylist & Artist</div></div></div></section>
+
+  <!-- GALLERY -->
+  <section id="gallery"><div class="reveal"><span class="section-label">Our Portfolio</span><h2 class="section-title">The Lumière Look</h2></div><div class="gallery-grid reveal"><div class="gallery-item"><img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?w=700&q=75" alt="balayage"><div class="gallery-overlay"><span>Balayage Color</span></div></div><div class="gallery-item"><img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=400&q=75" alt="blowout"></div><div class="gallery-item"><img src="https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=400&q=75" alt="makeup"></div><div class="gallery-item"><img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&q=75" alt="nail art"></div><div class="gallery-item"><img src="https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=400&q=75" alt="cut"></div></div></section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials" class="testimonials"><div class="reveal" style="text-align:center;"><span class="section-label" style="justify-content:center;">Client Love</span><h2 class="section-title">Words of Radiance</h2></div><div class="testimonials-grid"><div class="testimonial-card"><div class="t-quote">"</div><p class="t-text">Lumière is a sanctuary. I leave every visit feeling more like myself. The attention to detail is unmatched.</p><div class="t-author"><div><div class="t-name">Julianne Moore</div><div class="stars">★★★★★</div></div></div></div><div class="testimonial-card"><div class="t-quote">"</div><p class="t-text">The balayage Elise created for my wedding was breathtaking.</p><div class="t-author"><div><div class="t-name">Maria L.</div><div class="stars">★★★★★</div></div></div></div><div class="testimonial-card"><div class="t-quote">"</div><p class="t-text">Finally, a salon that respects curly hair. The scalp treatment is life-changing.</p><div class="t-author"><div><div class="t-name">Anika T.</div><div class="stars">★★★★★</div></div></div></div></div></section>
+
+  <!-- CONTACT + MAP (map takes full container width) -->
+  <section id="contact" class="contact-section">
+    <div class="contact-info-block reveal"><span class="section-label">Secure Your Transformation</span><h2 class="section-title">Book <em style="font-style:italic; color:var(--gold);">your ritual</em></h2><p style="margin:12px 0 0 0; color: var(--mid);">Submit your details. Our concierge will coordinate your visit within 24 hours.</p><div style="font-size:0.85rem; line-height:2; margin-top:1.2rem;"><strong>📍 142 Blossom Lane, Midtown, NY</strong><br>📞 (212) 555-0174 &nbsp; ✉️ hello@lumieresalon.com<br>🕐 Mon–Sat: 9am – 8pm &nbsp;|&nbsp; Sun: 10am – 6pm</div><div class="mini-map"><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.183!2d-73.9855!3d40.7580!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" allowfullscreen loading="lazy" title="Lumière Salon location"></iframe></div></div>
+    <div class="contact-form reveal"><form id="homeBookingForm"><div class="form-row"><div class="form-group"><label>First Name *</label><input type="text" id="homeFname" required></div><div class="form-group"><label>Last Name *</label><input type="text" id="homeLname" required></div></div><div class="form-group"><label>Email *</label><input type="email" id="homeEmail" required></div><div class="form-group"><label>Phone</label><input type="tel" id="homePhone"></div><div class="form-row"><div class="form-group"><label>Service *</label><select id="homeService"><option value="">Select service</option><option>Precision Cut</option><option>Master Balayage</option><option>Scalp Ritual</option><option>Nail Artistry</option><option>Luminous Facial</option><option>Bridal Package</option></select></div><div class="form-group"><label>Preferred Date</label><input type="date" id="homeDate"></div></div><div class="form-group"><label>Notes</label><textarea rows="3" id="homeMessage" placeholder="Hair type, inspo ..."></textarea></div><div id="homeFormSuccess" class="form-success" style="display:none; background:#e8f5e9; border-radius:40px; padding:12px; margin-bottom:1rem;">✓ Thanks! We'll confirm shortly.</div><button type="submit" class="form-submit">Request Appointment →</button></form></div>
+  </section>
+
+  <!-- FOOTER - FULL RESTORED ELEMENTS (EXACTLY AS ORIGINAL INDEX.HTML) -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand"><div class="brand-name">LUMI<span>È</span>RE</div><p>Where beauty becomes artistry. A sanctuary of radiance in the heart of New York.</p><div class="social-links"><a href="#" class="social-link"><i class="fab fa-instagram"></i></a><a href="#" class="social-link"><i class="fab fa-pinterest"></i></a><a href="#" class="social-link"><i class="fab fa-tiktok"></i></a></div></div>
+      <div class="footer-col"><h4>SERVICES</h4><ul><li><a href="#services">Precision Cut</a></li><li><a href="#services">Master Balayage</a></li><li><a href="#services">Scalp Ritual</a></li><li><a href="#services">Bridal Package</a></li></ul></div>
+      <div class="footer-col"><h4>EXPLORE</h4><ul><li><a href="#philosophy">Philosophy</a></li><li><a href="#team">Artists</a></li><li><a href="#gallery">Gallery</a></li><li><a href="#testimonials">Reviews</a></li></ul></div>
+      <div class="footer-col"><h4>NEWSLETTER</h4><p style="margin-bottom: 6px;">Receive exclusive offers.</p><input type="email" placeholder="Your email" class="newsletter-input"><button class="newsletter-btn">Subscribe</button></div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 LUMIÈRE SALON · The Art of Radiance</p><p>Privacy · Terms</p></div>
+  </footer>
+</div>
+
+<!-- ========== LOGIN, ADMIN, TRASH VIEWS (fully functional, same as before) ========== -->
+<div id="loginView"><div class="video-container"><video autoplay muted loop playsinline class="video-background"><source src="https://videos.pexels.com/video-files/3997170/3997170-uhd_4096_2160_25fps.mp4" type="video/mp4"></video></div><div class="login-container"><div class="login-card"><div class="brand"><h1>Lumière</h1><p>Salon Management Portal</p></div><div id="loginError" class="error-message" style="display: none;">Invalid credentials. Hint: admin / admin123</div><form id="loginForm"><div class="input-group"><label>Username</label><input type="text" id="loginUsername" placeholder="admin"></div><div class="input-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••"></div><button type="submit"><i class="fas fa-arrow-right-to-bracket"></i> Sign In</button></form><div class="footer-note" style="margin-top:20px; font-size:12px;">Demo: admin / admin123</div></div></div></div>
+
+<div id="adminView"><video autoplay muted loop playsinline class="video-bg"><source src="https://assets.mixkit.co/videos/preview/mixkit-stylist-washing-a-clients-hair-in-a-salon-44508-large.mp4" type="video/mp4"></video><div class="overlay"></div><div class="container"><div class="header"><div class="title"><h1>Lumière Admin</h1><p>Premium Management Portal</p></div><a href="#" id="logoutFromAdmin" class="logout-link">LOGOUT</a></div><div class="nav-chips"><a href="#" data-filter="" class="chip active">Overview</a><a href="#" data-filter="today" class="chip">Today</a><a href="#" data-filter="previous" class="chip">History</a><a href="#" id="archiveChip" class="chip">Archive</a></div><div class="search-container"><input type="text" id="adminSearchInput" placeholder="Search client or service..."><input type="date" id="adminDateSearch"><button id="applyFiltersBtn" class="btn-search">APPLY FILTERS</button></div><div class="table-wrap"><table><thead><tr><th>Client</th><th>Service</th><th>Message</th><th>Scheduled</th><th>Actions</th></tr></thead><tbody id="adminTableBody"></tbody></table></div></div></div>
+
+<div id="trashView"><video autoplay muted loop playsinline class="video-bg"><source src="https://assets.mixkit.co/videos/preview/mixkit-stylist-washing-a-clients-hair-in-a-salon-44508-large.mp4" type="video/mp4"></video><div class="overlay"></div><div class="container"><div class="header"><div class="title"><h1>Trash Archive</h1><p>Manage deleted appointments</p></div><a href="#" id="backToAdminFromTrash" class="back-btn">RETURN TO DASHBOARD</a></div><div class="table-wrap"><table><thead><tr><th>Client</th><th>Service</th><th>Actions</th></tr></thead><tbody id="trashTableBody"></tbody></table></div></div></div>
+
+<script>
+  // BOOKINGS DATA
+  let bookings = [
+    { id: 1, first_name: "Emma", last_name: "Watson", email: "emma@example.com", service: "Master Balayage", message: "Soft caramel tones", booking_date: "2026-05-15", confirmed: 1, visited: 0, deleted: 0 },
+    { id: 2, first_name: "James", last_name: "Lee", email: "james@example.com", service: "Precision Cut", message: "Men's scissor cut", booking_date: "2026-05-10", confirmed: 0, visited: 1, deleted: 0 },
+    { id: 3, first_name: "Sophia", last_name: "Chen", email: "sophia@example.com", service: "Scalp Ritual", message: "Sensitive scalp", booking_date: "2026-05-20", confirmed: 0, visited: 0, deleted: 0 },
+    { id: 4, first_name: "Ava", last_name: "Martinez", email: "ava@example.com", service: "Luminous Facial", message: "Glow treatment", booking_date: "2026-05-18", confirmed: 0, visited: 0, deleted: 0 }
+  ];
+  let currentFilter = "", currentSearch = "", currentDate = "";
+  function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+  function renderAdminDashboard() {
+    let filtered = bookings.filter(b => b.deleted === 0);
+    if(currentSearch) { let sl = currentSearch.toLowerCase(); filtered = filtered.filter(b => b.first_name.toLowerCase().includes(sl) || b.last_name.toLowerCase().includes(sl) || b.email.toLowerCase().includes(sl) || b.service.toLowerCase().includes(sl)); }
+    if(currentDate) filtered = filtered.filter(b => b.booking_date === currentDate);
+    if(currentFilter === "today") { const today = new Date().toISOString().slice(0,10); filtered = filtered.filter(b => b.booking_date === today); }
+    if(currentFilter === "previous") { const today = new Date().toISOString().slice(0,10); filtered = filtered.filter(b => b.booking_date < today); }
+    filtered.sort((a,b)=>b.booking_date.localeCompare(a.booking_date));
+    const tbody = document.getElementById("adminTableBody"); if(!tbody) return;
+    tbody.innerHTML = "";
+    if(filtered.length===0) { tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No appointments</td></tr>`; return; }
+    filtered.forEach(b => { const row = tbody.insertRow(); row.innerHTML = `<td><div style="font-weight:700;">${escapeHtml(b.first_name)} ${escapeHtml(b.last_name)}</div><div style="font-size:11px;">${escapeHtml(b.email)}</div></td><td><span style="background:#f3f0ea;padding:4px 12px;border-radius:50px;">${escapeHtml(b.service)}</span></td><td>${escapeHtml(b.message||'—')}</td><td>${b.booking_date}</td><td><div class="action-group">${b.confirmed ? `<a href="#" data-id="${b.id}" data-field="confirmed" data-val="0" class="status-badge btn-confirm toggle-status">Confirmed</a>` : `<a href="#" data-id="${b.id}" data-field="confirmed" data-val="1" class="act-btn btn-confirm toggle-status">Confirm</a>`}${b.visited ? `<a href="#" data-id="${b.id}" data-field="visited" data-val="0" class="status-badge btn-visited toggle-status">Arrived</a>` : `<a href="#" data-id="${b.id}" data-field="visited" data-val="1" class="act-btn btn-visited toggle-status">Arrived</a>`}<a href="#" data-id="${b.id}" class="act-btn btn-trash soft-delete"><i class="fas fa-trash"></i> Delete</a></div></td>`; });
+    attachAdminEvents();
+  }
+  function attachAdminEvents() { document.querySelectorAll("#adminView .toggle-status").forEach(btn => btn.addEventListener("click", (e) => { e.preventDefault(); let id = parseInt(btn.getAttribute("data-id")), field=btn.getAttribute("data-field"), val=parseInt(btn.getAttribute("data-val")); let b = bookings.find(bk=>bk.id===id); if(b) b[field]=val; renderAdminDashboard(); })); document.querySelectorAll("#adminView .soft-delete").forEach(btn => btn.addEventListener("click", (e) => { e.preventDefault(); let id = parseInt(btn.getAttribute("data-id")); let b = bookings.find(bk=>bk.id===id); if(b && b.deleted===0) b.deleted=1; renderAdminDashboard(); renderTrashView(); })); }
+  function renderTrashView() { let deleted = bookings.filter(b=>b.deleted===1); let tbody = document.getElementById("trashTableBody"); if(!tbody) return; tbody.innerHTML=""; if(deleted.length===0) { tbody.innerHTML=`<tr><td colspan="3" style="text-align:center;">Trash empty</td></tr>`; return; } deleted.forEach(b=>{ let row=tbody.insertRow(); row.innerHTML=`<td>${escapeHtml(b.first_name)} ${escapeHtml(b.last_name)}<br><small>${escapeHtml(b.service)}</small></td><td>${b.booking_date}</td><td><div style="display:flex;gap:8px;"><a href="#" data-id="${b.id}" class="restore-btn" style="background:#ecfdf5;color:#10b981;padding:8px 16px;border-radius:100px;">Restore</a><a href="#" data-id="${b.id}" class="purge-btn" style="background:#fff1f2;color:#ef4444;padding:8px 16px;border-radius:100px;">Purge</a></div></td>`; }); document.querySelectorAll("#trashView .restore-btn").forEach(btn=>btn.addEventListener("click",(e)=>{ e.preventDefault(); let id=parseInt(btn.getAttribute("data-id")); let bk=bookings.find(b=>b.id===id); if(bk) bk.deleted=0; renderTrashView(); renderAdminDashboard(); })); document.querySelectorAll("#trashView .purge-btn").forEach(btn=>btn.addEventListener("click",(e)=>{ e.preventDefault(); let id=parseInt(btn.getAttribute("data-id")); bookings = bookings.filter(b=>b.id!==id); renderTrashView(); renderAdminDashboard(); })); }
+  const homeDiv = document.getElementById("homeView"), loginDiv = document.getElementById("loginView"), adminDiv = document.getElementById("adminView"), trashDiv = document.getElementById("trashView");
+  function showView(view) { homeDiv.style.display="none"; loginDiv.style.display="none"; adminDiv.style.display="none"; trashDiv.style.display="none"; if(view==='home') homeDiv.style.display="block"; else if(view==='login') loginDiv.style.display="flex"; else if(view==='admin') { adminDiv.style.display="block"; renderAdminDashboard(); } else if(view==='trash') { trashDiv.style.display="block"; renderTrashView(); } }
+  document.getElementById("adminEntryFromHome")?.addEventListener("click",(e)=>{e.preventDefault(); showView("login");});
+  document.getElementById("adminEntryMobileHome")?.addEventListener("click",(e)=>{e.preventDefault(); showView("login");});
+  document.getElementById("loginForm")?.addEventListener("submit",(e)=>{e.preventDefault(); let user=document.getElementById("loginUsername").value, pwd=document.getElementById("loginPassword").value; if(user==="admin" && pwd==="admin123") { document.getElementById("loginError").style.display="none"; showView("admin"); renderAdminDashboard(); } else { document.getElementById("loginError").style.display="flex"; }});
+  document.getElementById("logoutFromAdmin")?.addEventListener("click",(e)=>{e.preventDefault(); showView("home");});
+  document.getElementById("archiveChip")?.addEventListener("click",(e)=>{e.preventDefault(); showView("trash");});
+  document.getElementById("backToAdminFromTrash")?.addEventListener("click",(e)=>{e.preventDefault(); showView("admin"); renderAdminDashboard();});
+  document.getElementById("applyFiltersBtn")?.addEventListener("click",()=>{ currentSearch=document.getElementById("adminSearchInput").value; currentDate=document.getElementById("adminDateSearch").value; renderAdminDashboard(); });
+  document.querySelectorAll("#adminView .chip").forEach(chip=>{ chip.addEventListener("click",(e)=>{ e.preventDefault(); currentFilter=chip.getAttribute("data-filter")||""; document.querySelectorAll("#adminView .chip").forEach(c=>c.classList.remove("active")); chip.classList.add("active"); renderAdminDashboard(); }); });
+  document.getElementById("homeBookingForm")?.addEventListener("submit", (e) => { e.preventDefault(); const fname = document.getElementById("homeFname").value.trim(), lname = document.getElementById("homeLname").value.trim(), email = document.getElementById("homeEmail").value.trim(), service = document.getElementById("homeService").value, date = document.getElementById("homeDate").value || new Date().toISOString().slice(0,10), message = document.getElementById("homeMessage").value; if(!fname || !lname || !email || !service) { alert("Please fill required fields"); return; } const newId = bookings.length ? Math.max(...bookings.map(b=>b.id)) + 1 : 5; bookings.push({ id: newId, first_name: fname, last_name: lname, email, service, message, booking_date: date, confirmed: 0, visited: 0, deleted: 0 }); document.getElementById("homeFormSuccess").style.display = "flex"; document.getElementById("homeBookingForm").reset(); setTimeout(() => document.getElementById("homeFormSuccess").style.display = "none", 3000); if(adminDiv.style.display === "block") renderAdminDashboard(); });
+  function initHomeFloating() { const container = document.getElementById("salon-tools-container-home"); if(container) for(let i=0;i<18;i++){ let icon=document.createElement('i'); icon.className=`fa-solid ${['fa-scissors','fa-spray-can','fa-wand-magic-sparkles'][i%3]} salon-tool`; icon.style.left=Math.random()*100+'vw'; icon.style.top=Math.random()*100+'vh'; icon.style.fontSize=(Math.random()*30+18)+'px'; icon.style.opacity=(Math.random()*0.2+0.08); container.appendChild(icon); } window.addEventListener('scroll',()=>{ let sy=window.scrollY; document.querySelectorAll('#homeView .salon-tool').forEach(el=>{ el.style.transform=`translateY(${sy*0.05}px) rotate(${sy*0.06}deg)`; }); document.getElementById("navbarHome")?.classList.toggle('scrolled', sy>50); }); }
+  const observer = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('active'); }); },{threshold:0.1});
+  document.querySelectorAll("#homeView .reveal").forEach(el=>observer.observe(el));
+  const hamburger = document.getElementById("homeHamburger"), mobileMenu = document.getElementById("homeMobileMenu");
+  if(hamburger && mobileMenu) hamburger.addEventListener("click",()=>mobileMenu.classList.toggle("open"));
+  document.querySelectorAll("#homeView .mobile-menu a").forEach(a=>a.addEventListener("click",()=>mobileMenu.classList.remove("open")));
+  initHomeFloating(); showView("home");
+  const dateInput = document.getElementById("homeDate"); if(dateInput) dateInput.min = new Date().toISOString().split("T")[0];
+</script>
+</body>
+</html>
